@@ -1,0 +1,27 @@
+pro_Neighborhood,pro_Count Parcels,pro_Count Units,pro_Avg Living Area / Unit,pro_Avg Building Age,pro_Pct. units owner-occupied
+Allston,4340,15757,1091.0,46.71,22.17
+Back Bay,8688,24728,1568.0,27.01,30.13
+Bay Village,513,1530,733.0,24.85,39.18
+Beacon Hill,4059,8557,885.0,31.51,34.86
+Brighton,11490,31578,910.0,47.34,33.76
+Charlestown,6998,16605,984.0,31.74,50.99
+Chinatown,541,8625,515.0,21.43,17.19
+Dorchester,22164,58005,1015.0,54.7,52.45
+Downtown,5589,27662,2542.0,16.2,22.58
+East Boston,8374,26643,811.0,55.25,41.84
+Fenway,4495,42851,526.0,30.59,14.37
+Harbor Islands,26,747,53.0,86.5,0.0
+Hyde Park,9150,22352,841.0,56.86,64.51
+Jamaica Plain,12204,31434,835.0,40.09,53.65
+Leather District,536,1034,1958.0,18.92,38.62
+Longwood Medical Area,379,2921,3321.0,18.65,25.07
+Mattapan,7107,29045,670.0,58.98,48.53
+Mission Hill,2116,12789,647.0,43.32,25.9
+North End,4087,12364,600.0,28.71,33.84
+Roslindale,8501,16919,971.0,53.26,63.37
+Roxbury,10426,58996,609.0,47.14,33.56
+South Boston,13909,26121,978.0,32.73,42.3
+South Boston Waterfront,1382,10582,2411.0,14.49,26.85
+South End,10408,32552,680.0,22.43,43.3
+West End,1807,37491,113.0,28.5,22.86
+West Roxbury,11733,28279,736.0,49.93,65.45

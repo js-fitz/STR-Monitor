@@ -1,0 +1,185 @@
+<html lang="en" style='font-size: 14px;'>
+
+<head>
+	<link rel='icon' type='image/png' href="{{ url_for('static',filename='favico.png') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.2">
+	<title>STR Monitor</title>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/project.css') }}">
+	<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+	<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/hamburgers.css') }}">
+	<script src="https://kit.fontawesome.com/7abfe696a6.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+
+		<!-- slideout menu -->
+	<div id="about-sidebar" class="about-sidebar">
+		<div style='padding:15px 20px;'>
+
+			<div class="row no-gutters" style='margin-top:10px'>
+			    <div style="width:25%;display:inline-block;">
+							<h4 style='text-align:right;padding-right:15px' class='text-muted' >tools</h4>
+			    </div>
+			    <div style='width:75%;display:inline-block;padding: 2px 0 5px 15px;border-left:1px solid grey'>
+						<h6><a href="/">Probable Violations Map</a></h6>
+						<small>Identify probable STR violations</small>
+						<h6 style='margin-top:10px'><a href="/hm">Heatmaps (Latest)</a></h6>
+						<small>STR data for Neighborhoods & census tracts</small>
+						<h6 style='margin-top:10px'><a href="/time">Heatmaps (Over Time)</a></h6>
+						<small>Visualize changes in the STR market over time</small>
+			    </div>
+			  </div>
+
+				<div class="row no-gutters" style='margin-top:35px'>
+					<div style="width:25%;display:inline-block;">
+							<h4 style='text-align:right;padding-right:15px' class='text-muted'>about</h4>
+			    </div>
+			    <div style='width:75%;display:inline-block;padding: 2px 0 0 15px;border-left:1px solid grey'>
+						<p class="card-text">This site is designed to provide officials, organizers and researchers with access to the latest information on Short-Term Rental (STR) units in Boston, MA.
+							<p class='card-text text-muted'>Data last updated February 22, 2019. Pending updated STR application data from the City of Boston.</p></p>
+			    </div>
+			  </div>
+
+				<div class="row no-gutters" style='margin-top:35px'>
+					<div style="width:25%;display:inline-block;">
+							<h4 style='text-align:right;padding-right:15px' class='text-muted'>contact</h4>
+			    </div>
+			    <div style='width:75%;display:inline-block;padding: 2px 0 0 15px;border-left:1px solid grey'>
+						<a href = "mailto:unofficialSTRmonitor@gmail.com">
+						unofficialSTRmonitor@gmail.com</a>
+			    </div>
+			  </div>
+		</div>
+	</div>
+
+	<div class="row">
+
+
+		<!-- LEFT SIDEBAR -->
+
+		<div class="col-s" style='padding:15px 15px 30px; width:400px; max-height:100vh;overflow:overlay'>
+
+
+				<!-- SITE TITLE & nav -->
+				<div class='row' style='margin:0'>
+					<div style='width:calc(100% - 45px)'>
+						<h2><a id='site-title' class='text-primary' href='/'>Short-Term<br>Rental Monitor</a></h2>
+					</div>
+
+					<div class='text-dark' style='float:right; z-index:4'>
+
+						<button class="btn nav-burger hamburger hamburger--arrow" onclick="togNav()">
+								<span class="hamburger-box">
+							    <span class="hamburger-inner"></span>
+							  </span>
+					  </button>
+					</div>
+				</div>
+				<div class='row' style='margin:0'>
+				  <h4 class='text-secondary'>Boston, MA</h4>
+				</div>
+				  <hr>
+
+				<!-- CONTENTS -->
+
+				{% if 'heat' in sidebar['page_url'] %}
+					{% with data_info=data_info, param=param, sidebar=sidebar %}
+						{% include "chloro_contents.html" %}
+					{% endwith %}
+				{% elif 'analyze' in sidebar['page_url'] %}
+					{% with sidebar=sidebar, ctrd_row=ctrd_row, listing_details=listing_details  %}
+						{% include "license_map_controls.html" %}
+					{% endwith %}
+				{% endif %}
+
+		</div>
+
+
+
+	 <!-- MAP DISPLAY -->
+		<div class="col-lg" style='padding:0'>
+	    {{ (m._repr_html_().replace('padding-bottom:60%;', 'padding-bottom:100vh;'))|safe }}
+		</div>
+
+
+
+
+  </div>
+</div>
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+
+<script>
+function licenseDetails(license) {
+	window.location = "/analyze?license="+license;
+}
+</script>
+
+
+<script>
+	$(document).ready(function(){
+	  $('[data-toggle="popover"]').popover();
+	});
+</script>
+
+
+<script>
+
+function togNav() {
+		var nav = document.getElementById("menu-sidebar");
+		if (nav.style.width == '400px') {
+			nav.style.width = '0';
+		} else {
+			nav.style.width = "400px";
+		}
+	}
+</script>
+
+
+<script>
+  var clearburger = document.querySelector(".clr-burger");
+  clearburger.addEventListener("mouseenter", function() {
+    clearburger.classList.toggle("is-active");
+  });
+</script>
+<script>
+  var clearburger = document.querySelector(".clr-burger");
+	clearburger.addEventListener("mouseleave", function() {
+    clearburger.classList.toggle("is-active");
+  });
+</script>
+
+<script>
+  var navburger = document.querySelector(".nav-burger");
+  navburger.addEventListener("click", function() {
+    navburger.classList.toggle("is-active");
+  });
+</script>
+
+<script>
+  var ctrlburger = document.querySelector(".ctrl-burger");
+  ctrlburger.addEventListener("click", function() {
+    ctrlburger.classList.toggle("is-active");
+  });
+</script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+	</script>
+
+
+
+</body>
+</html>

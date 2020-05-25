@@ -1,0 +1,364 @@
+
+
+	{% if sidebar['ctrls_open']  %}
+<h4> Violation Probability Index </h4>
+<p> Helping researchers, organizers and city officials
+    identify probable violations of the new
+	Short-Term Rental (STR) Ordinance in Boston, MA.</p>
+<div class="card bg-dark" style="margin: 20px 0;width: 99%;border:0">
+	<img src="/static/cmap_legend.png" class='card-img-top' style='height:22px' alt="map legend">
+	<div class="text-light card-body" style='text-align:center;padding:5px 15px'>
+		<p style='margin:0;display:inline-block;float:left' class="card-text">low probability</p>
+		<p style='margin:0;display:inline-block;float:right' class="card-text">high probability</p>
+	</div>
+</div>
+<p> Using data sourced from Airbnb and the City of Boston, the Violation
+	Probability Index constitutes a likelihood estimate of violator status
+	for suspect STR licenses (licenses being used by multiple listings).</p>
+<p> Select a license group from the map to start exploring listings or
+	continue reading to learn more about how the Violation Probability Index is calculated.</p>
+
+	<hr style='margin: 25px 0'>
+<h5 style='margin-bottom:15px'>Calculating violation probabilities</h5>
+<p>In compliance with the new ordinance, Airbnb now requires hosts to include an
+	STR license number with each listing. In theory, every listing should have its own
+	license number — but this is not always the case.
+</p>
+<p>The circles on this map represent groups of listings using duplicated
+	license numbers; the size of each circle corresponds to the number of listings in that group.
+</p>
+<h6 class='text-muted' style='margin:20px 0 15px'>De-anonymizing listing locations</h6>
+<p>Airbnb anonymizes listings by randomly offsetting locations up to 500 ft., making it
+	impossible to pinpoint the exact location of an individual listing. But by taking the average coordinates of listings within a license group, we can approximate their true locations.
+</p>
+<h5 class='text-muted' style='margin:20px 0 15px'>Factors determining probable violator status</h5>
+<p>Seven factors are used to calculate the violation probability index for a each license group.
+	Custom weights are assigned in accordance with the relative importance of each factor
+ (indicated in blue below), and the product of these terms is normalized to produce
+ an index value.
+</p>
+<ul class="list-group">
+
+	<li class="list-group-item bg-light">
+		<div style='display:inline-block'><h5>1. License status </h5></div>
+		<div style='display:inline-block;float:right'>
+			<span style='font-size:.9em'
+							class="badge badge-primary badge-pill">1.0</span></div>
+		<br>
+		 <ul class='text-muted' style='padding-left:30px;' type='disc' >
+			 <li>Active = 0 | Void / Inactive / (not found) = 1
+					</li>
+			 <li>Source: Boston Licensing Department
+				</li>
+		</ul>
+	</li>
+
+  <li class="list-group-item bg-light">
+		<div style='display:inline-block'><h5>2. Zoning (land use) </h5></div>
+		<div style='display:inline-block;float:right'>
+			<span style='font-size:.9em'
+							class="badge badge-primary badge-pill">.85</span></div>
+		<br>
+		Inverse ratio of the number of commercially-zoned properties (those exempt from the ordinance)
+		 to all properties among the 50 closest properties to the average listing location.
+		 <ul class='text-muted' style='padding-left:30px;' type='disc' >
+			 <li>Search radius increases by 50 properties until at least one commercial property is found
+				 </li>
+			<li>A commercial property must have at least one unit to qualify (excludes empty lots)
+				</li>
+			<li>Source: MA Property Assessment Data / Boston Area Research Initiative (BARI)
+				</li>
+		</ul>
+  </li>
+
+
+		<li class="list-group-item bg-light">
+			<div style='display:inline-block'><h5>3. Geographic dispersal </h5></div>
+			<div style='display:inline-block;float:right'>
+				<span style='font-size:.9em'
+								class="badge badge-primary badge-pill">.80</span></div>
+			<br>
+			Logged average distance of listings to the average listing location.
+			Greater dispersal indicates higher probability of violation.
+			 <ul class='text-muted' style='padding-left:30px;' type='disc' >
+				<li>Similar to inertia score in K-means clustering
+				 </li>
+				 <li>Source: InsideAirbnb.com (inferred)
+					</li>
+			</ul>
+		</li>
+
+	<li class="list-group-item bg-light">
+		<div style='display:inline-block'><h5>4. Guest quota </h5></div>
+		<div style='display:inline-block;float:right'>
+			<span style='font-size:.9em'
+							class="badge badge-primary badge-pill">.75</span></div>
+		<br>
+		Compares the total number of accommodations (sum of all listings)
+		with the maximum number of guests allowed according to license type
+		 <ul class='text-muted' style='padding-left:30px;' type='disc' >
+			 <li>Within quota = 0 | Exceeds quota = 1
+					</li>
+			 <li>Source: Boston Licensing Department
+				</li>
+		</ul>
+	</li>
+
+
+	<li class="list-group-item bg-light">
+		<div style='display:inline-block'><h5>5. Room quota </h5></div>
+		<div style='display:inline-block;float:right'>
+			<span style='font-size:.9em'
+							class="badge badge-primary badge-pill">.70</span></div>
+		<br>
+		Compares the total number of listings with the maximum number of
+		rooms allowed according to the STR license type
+		 <ul class='text-muted' style='padding-left:30px;' type='disc' >
+			 <li>Within quota = 0 | Exceeds quota = 1
+					</li>
+			 <li>Source: Boston Licensing Department
+				</li>
+		</ul>
+	</li>
+
+	<li class="list-group-item bg-light">
+		<div style='display:inline-block'><h5>6. Commercial property proximity </h5></div>
+		<div style='display:inline-block;float:right'>
+			<span style='font-size:.9em'
+							class="badge badge-primary badge-pill">.65</span></div>
+		<br>
+		Double-logged distance from the average listing location
+		to the closest commercial property (with at least one unit)
+		 <ul class='text-muted' style='padding-left:30px;' type='disc' >
+			 <li>Sources: BARI & InsideAirbnb.com (inferred)
+				</li>
+		</ul>
+	</li>
+
+
+	<li class="list-group-item bg-light">
+		<div style='display:inline-block'><h5>7. Listing count </h5></div>
+		<div style='display:inline-block;float:right'>
+			<span style='font-size:.9em'
+							class="badge badge-primary badge-pill">.55</span></div>
+		<br>
+		Number of listings in the given license group. More listings means
+		greater confidence in the average listing location.
+		 <ul class='text-muted' style='padding-left:30px;' type='disc' >
+			 <li>Source: InsideAirbnb.com (inferred)
+				</li>
+		</ul>
+	</li>
+
+</ul>
+
+
+
+	{% else %}
+
+<div class="card" style="border:0;width: 100%; margin:0">
+	<ul class="list-group">
+
+		<!-- TITLE SECTION -->
+			<li class="bg-secondary text-white list-group-item">
+				<div style='display:inline-block;width:calc(100% - 60px)'>
+					<h5 class='text-light' style='margin-top:6px'>License Details</h5>
+				</div>
+
+				<div style='float:right;margin-top:2px'>
+						  <a class="btn clr-burger hamburger hamburger--stand"
+									type="button" data-toggle="hover" href='/'>
+							<span class="hamburger-box">
+						    <span class="hamburger-inner"></span>
+						  </span>
+				  </a>
+				</div>
+			</li>
+
+<!-- LICENSE DETAILS -->
+
+
+		<li class="list-group-item border-dark"  style='padding:15px 15px 20px'>
+			<div style='padding:0 15px' class='row'>
+
+				<div  style='display:inline-block;padding-left:7px;margin:0;'>
+					<h4  style='margin:0 0 5px' class='text-muted'>
+						<span style='font-size:1.2em' class='text-dark'>{{ ctrd_row.count_listings|round|int}}</span> listings use
+						<span style='font-size:1em' class='text-dark'>{{ctrd_row.license}}</span>
+					</h4>
+				</div>
+
+				<ul style='font-size: 1.1em;padding-left:30px;' type='disc' >
+					<li>Accommodating <b>{{ctrd_row.accommodations}}</b> guests</li>
+					{% if ctrd_row.license_status != 'not found' %}
+						<li>License type: <b class='text-dark' style='font-size:1em'>{{ctrd_row.license_category}}</b></li>
+
+						<ul style='padding-left:25px;font-size:.9em'><li>Max.
+								<b>{{ctrd_row.license_max_bedrooms}}</b> beds /
+							 	<b>{{ctrd_row.license_max_guests}}</b> guests
+						{% if ctrd_row.exceeds_max_guests == 1 or ctrd_row.license_max_bedrooms == 1 %}
+								<i style='margin-left:4px' class="text-danger fas fa-exclamation-triangle"></i>
+						{% else %}
+								<i style='margin-left:4px' class="text-success fas fa-clipboard-check"></i>
+						{% endif %}
+						</ul>
+					{% endif %}
+				</ul>
+			</div>
+
+		  </li>
+
+			<li class="list-group-item border-dark"  style='padding:15px 15px 20px'>
+				<h6  class='card-title text-dark'>Violation status</h6>
+				<div class='row'>
+
+					<div class='col' style='flex-grow:0;padding-right:0'>
+						<h3 style='margin:2px 0'>
+							<div  style='display:inline-block;padding:8px 12px;border-radius:3px; margin:0;background-color:{{ ctrd_row.license_color }}'>
+							<b  style='margin:0;color:{{ctrd_row.font_top_clr}}'>
+								{{ ctrd_row.violator_prob_rating|round|int }}%</b>
+							</div>
+						</h3>
+					</div>
+
+					<div class='text-primary col' style='margin-top:2px;flex-grow:.8;padding-left:15px;'>
+						<div  style='display:inline-block;padding:0;margin:0;'>
+							<h5 >{{ctrd_row.likeliness_string}}</h5>
+						</div>
+
+					<div class='text-muted' style='font-size: 1.1em;margin-top:-4px'>
+						<span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+								 data-placement="bottom" data-html="true"
+								 title="Internal STR Applications Data<br>Source: City of Boston">
+						  License:
+					{% if ctrd_row.license_status == 'Active' %}
+						<b class='text-dark'>{{ctrd_row.license_status}}</b>
+					{% else %}
+						<b class='text-danger'>{{ctrd_row.license_status}}</b>
+					{% endif %}
+						</span>
+					</div>
+
+				</div>
+				</li>
+
+  <li class="list-group-item bg-light  border-dark" style='padding:15px 15px 20px'>
+		<div>
+			<h6 style='display:inline-block' class='card-title text-dark'>Average listing location</h6>
+
+{% if False %}
+			<button style='display:inline-block;float:right;transform:scale(.8);margin-right:10px' class="btn loc-burger hamburger hamburger--minus" type="button" data-toggle="collapse" data-target="#propDetails" aria-expanded="false" aria-controls="propDetails">
+				<span class="hamburger-box">
+					<span class="hamburger-inner"></span>
+				</span>
+			</button>
+{% endif %}
+
+		</div>
+
+				<div class='row' style='margin-top:-3px'>
+					<div class='col' style='flex-grow:0; padding-right:0'>
+						<div style='display:inline-block;margin-top:7px'>
+							<div style='background-color:#333;border-radius:200px;padding:9px'>
+								<h5 style='margin:-1px 0 0;padding:0;'>
+									<i style='color:red' class="fas fa-crosshairs"></i>
+								</h5>
+							</div>
+						</div>
+
+					</div>
+
+					<div class='col-lg' style='padding-left:10px'>
+						<div  style='display:inline-block;padding:0;margin:8px 0 0;'>
+							<h5 style='font-size:1.1em;margin:-3px 0 5px 10px' class='text-dark'>
+							<a class='text-dark' target='_blank' href=" http://maps.google.com/?q={{ctrd_row.lat_long_display|replace(' ', '')|replace(',', ', ') }}"> 	{{ctrd_row.lat_long_display }}
+								<span class='text-muted' style='font-size:.94em;margin-left:5px'><i class="fas fa-compass"></i></span></a></h5>
+						</div>
+						<ul style='font-size:.9em;padding-left:25px;' type='disc' >
+							<li>Listings dispersed up to <b>{{ctrd_row.max_distance_ft|round|int}}</b> ft
+								{% if ctrd_row.max_distance_ft > 600 %}
+										<i style='margin-left:4px' class="text-danger fas fa-exclamation-triangle"></i>
+								{% elif ctrd_row.max_distance_ft > 250 %}
+										<i style='margin-left:4px' class="text-warning fas fa-exclamation-triangle"></i>
+								{% endif %}
+							</li>
+						</ul>
+					</div>
+			</div>
+
+				<hr style='margin:15px 0 12px'>
+				<div class='row' style='padding:0 20px'>
+
+					<h6 style='margin:5px 0 10px' class='text-muted'>Closest property with commercial zoning:</h6>
+
+					{% if ctrd_row.centroid_confidence >= 20 %}
+					<div style='width:100%'>
+					<h5 style='margin:5px 0'>
+						<a class='text-dark' target='blank' href=" http://maps.google.com/?q={{ctrd_row.best_guess_prop_adrs}}, Boston MA">
+						{{ctrd_row.best_guess_prop_adrs}}
+						<span class='text-secondary' style='font-size:.8em;margin-left:3px'>
+							<i class="fas fa-compass"></i></span></a>
+					</h5>
+					</div>
+					{% if ctrd_row.best_guess_prop_lu != 'Commercial'  %}
+					<h6 class='text-secondary'>
+						{{ctrd_row.best_guess_prop_lu}}</h6>
+						{% endif  %}
+						<p class='text-muted'>
+						{{ctrd_row.closest_commprop_dist_ft|round|int}} ft. from average listing location
+						</p>
+
+					<ul style='padding-left:25px;' type='disc' >
+
+
+						<li>
+							{% if ctrd_row.best_guess_prop_own_occ == 1 %}
+							Owner-occuppied
+								<i style='margin-left:4px' class="text-success fas fa-clipboard-check"></i>
+							{% else %}
+							Not owner-occuppied
+								<i style='margin-left:4px' class="text-danger fas fa-exclamation-triangle"></i>
+
+							{% endif %}
+						</li>
+						<li>{% if ctrd_row.best_guess_prop_num_floors == 1 %}
+							 {{ctrd_row.best_guess_prop_num_floors|round|int}} floor
+							 {% else %}
+							 {{ctrd_row.best_guess_prop_num_floors|round|int}} floors
+							 {% endif %}
+							 {% if ctrd_row.best_guess_prop_unit_n == 1 %}
+						 	 | {{ctrd_row.best_guess_prop_unit_n}} unit
+							 {% else %}
+							 | {{ctrd_row.best_guess_prop_unit_n}} units
+							 {% endif %}
+							 {% if ctrd_row.count_listings > ctrd_row.best_guess_prop_unit_n %}
+									 <i style='margin-left:4px' class="text-danger fas fa-exclamation-triangle"></i>
+							 {% else %}
+									 <i style='margin-left:4px' class="text-success fas fa-clipboard-check"></i>
+							 {% endif %}
+						 </li>
+
+					</ul>
+					{% else %}
+					<h5 style='margin:0' class='text-dark'>Unknown
+						<span style='font-size:.75em'>(listings too dispersed)</span>
+					</h5>
+					{% endif %}
+
+				</div>
+
+</li>
+
+
+			<li class="list-group-item border-dark" style='padding:15px 15px 20px'>
+				<h6 style='display:inline-block;margin:0' class='card-title text-dark'>Listings</h6>
+
+
+					{{ listing_details|safe }}
+
+		  </li>
+
+	</ul>
+</div>
+
+	{% endif %}

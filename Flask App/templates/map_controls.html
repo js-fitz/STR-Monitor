@@ -1,0 +1,80 @@
+<form action="/{{sidebar['page_url']}}" style='width:100%'>
+	{% if sidebar['ctrls_open'] and sidebar['page_url']=='heatmap'  %}
+		<h5  style='margin:0 0 15px' class='text-secondary'>Select a feature to start mapping.</h5>
+	{% endif %}
+	{% if sidebar['ctrls_open'] and sidebar['page_url']=='time-heatmap'  %}
+		<h5  style='margin:0 0 15px' class='text-secondary'>To start the animation, click ▶</h5>
+	{% endif %}
+
+
+<div class="card border-primary" style="width: 100%;">
+	<ul class="list-group">
+
+		<!-- TITLE SECTION -->
+		<li class="bg-primary text-white list-group-item">
+			<div style='display:inline-block;width:calc(100% - 60px)'>
+				<h5 style='margin-top:3px'>{{ sidebar['page_title'] }}</h5>
+			</div>
+
+			<div style='float:right;margin-top:2px'>
+					{% if sidebar['ctrls_open'] %}
+					  <button class="btn ctrl-burger hamburger is-active hamburger--minus" type="button" data-toggle="collapse" data-target="#ctrls_collapse" aria-expanded="true" aria-controls="ctrls_collapse">
+					{% else %}
+						<button class="btn ctrl-burger hamburger hamburger--minus" type="button" data-toggle="collapse" data-target="#ctrls_collapse" aria-expanded="false" aria-controls="ctrls_collapse">
+					{% endif %}
+						<span class="hamburger-box">
+					    <span class="hamburger-inner"></span>
+					  </span>
+			  </button>
+			</div>
+		</li>
+
+<!-- MAP CONTROLS -->
+		{% if sidebar['ctrls_open'] %}
+		<div class="collapse show" id="ctrls_collapse">
+		{% else %}
+		<div class="collapse" id="ctrls_collapse">
+		{% endif %}
+
+			<!-- GROUPBY SELECT -->
+		  <li class="list-group-item" style='padding:15px'>
+				<div style='display:inline-block;margin-top:7px'>
+					<h5 class='text-secondary'>Regions:</h5>
+				</div>
+				<div style='display:inline-block;float:right'>
+
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						{% if gb=='c' %}
+						<label class="btn btn-light">
+							<input type="radio" name="groupby" id="neighb"  value="n">Neighborhood
+						</label>
+						<label class="btn btn-light">
+							<input type="radio" name="groupby" id="2010ct"  value="c" checked>Census Tract (2010)
+						</label>
+
+						{% elif gb=='n' %}
+						<label class="btn btn-light">
+							<input type="radio" name="groupby" id="neighb"  value="n" checked>Neighborhood
+						</label>
+						<label class="btn btn-light">
+							<input type="radio" name="groupby" id="2010ct"  value="c">Census Tract (2010)
+						</label>
+						{% endif %}
+					</div>
+
+				</div>
+		  </li>
+
+			<!-- PARAM SELECT -->
+			<li class="list-group-item" style='padding-bottom: 10px;'>
+					<h5 class="card-title text-secondary">Feature:</h5>
+					{% if sidebar['ctrl_html'] %}
+						{{ sidebar['ctrl_html']|safe }}
+					{% endif %}
+			</li>
+
+		</div>
+	</ul>
+</div>
+
+</form>

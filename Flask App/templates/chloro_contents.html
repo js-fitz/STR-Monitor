@@ -1,0 +1,50 @@
+<!-- CONTROL PANEL -->
+<div class="row" style='margin:0'>
+  {% with sidebar=sidebar, gb=gb %}
+    {% include "map_controls.html" %}
+  {% endwith %}
+</div>
+
+<!-- NOW SHOWING (param summary + data info + data table) -->
+{% if param %}
+  <div class="row" style='margin:0'>
+    <div class="card" style="width: 100%;">
+      <ul class="list-group list-group-flush">
+
+        <!-- HEADER & RESET BUTTON -->
+        <li class="bg-secondary text-white list-group-item">
+            <h5 style='margin-top:3px' class='text-light'>Now showing</h5>
+
+
+        <!-- TITLE & SUMMARY -->
+        <li class="list-group-item">
+          <h4  class='card-title' style='margin-top:3px'>{{param[4:].replace('_', ' ')}}</h4>
+            <h6 class='card-text'>{{ data_info['param_summary'] }}</h6>
+            <ul><li><p class='card-text'>grouped by {{ data_info['gb_col'] }}</p></li></ul>
+        </li>
+
+        <!-- DATA DETAILS -->
+        <li class="list-group-item">
+          <b>Source:</b>  {{ data_info['data_name'] }} ({{ data_info['source'] }})
+          <br>
+          {% if data_info['updated'] %}
+            <b>Updated:</b> {{ data_info['updated'] }}
+          {% endif %}
+          {% if data_info['start_date'] %}
+            <b>Date range:</b> {{ data_info['start_date'].strftime('%b %Y') }} – {{ data_info['end_date'].strftime('%b %Y') }}
+          {% endif %}
+
+        </li>
+        {% if data_info['table'] %}
+        <li  class="list-group-item">
+          {{ data_info['table']|safe }}
+        </li>
+        {% else %}
+        <li  class="list-group-item">
+          <a href="/heatmap?groupby={{data_info['gb']}}&param={{ data_info['param']}}"><button type="button" class="btn btn-dark">View latest data</button></a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+{% endif %}
