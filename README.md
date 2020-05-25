@@ -3,9 +3,9 @@
 Capstone project by Joe Fitzgerald<br>Data Science Immersive, General Assembly <br> DSI-10-BOS |  Will Sutton & Teng Mao
 
 <a href='http://jsfitz.pythonanywhere.com/'>
-<img src='visuals/str-monitor-home.png'>
-<h4>View App ▶︎</h4>
- </a>
+<img src='visuals/str-monitor-home.png'></a>
+ <h4><a href='http://jsfitz.pythonanywhere.com/'>View App ▶︎</a></h4>
+ 
 
 
 ### Contents:
